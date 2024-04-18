@@ -25,9 +25,7 @@ export interface IOrder {
     total: number;    
 }
 
-export type TDeliveryForm = Pick<IOrder, 'payment' | 'address'>;
-
-export type TContactForm = Pick<IOrder, 'email' | 'phone'>;
+export type TOrderForm = Pick<IOrder, 'address' | 'email' | 'phone'>;
 
 export interface IOrderSuccess {
     id: string;
