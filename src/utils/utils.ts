@@ -133,3 +133,12 @@ export function createElement<
     }
     return element;
 }
+
+export function formatNumber(x: number, sep = ' ') {
+    if(x > 9999){
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+    } else {
+        return x;
+    }
+    
+}

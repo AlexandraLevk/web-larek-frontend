@@ -1,33 +1,42 @@
-export type ProductCategory = 'софт-скил' | 'другое' | 'дополнительное' | 'кнопка' | 'хард-скил';
-export type PaymentMethod = 'онлайн' | 'при получении';
+export type ProductCategory =
+	| 'софт-скил'
+	| 'другое'
+	| 'дополнительное'
+	| 'кнопка'
+	| 'хард-скил';
 
 export interface IItem {
-    id: string;
-    description?: string;
-    image: string;
-    title: string;
-    category: ProductCategory;
-    price: number;
+	id: string;
+	description: string;
+	image: string;
+	title: string;
+	category: ProductCategory;
+	price: number | null;
+	inBasket: boolean;
 }
 
-export interface IItemsData {
-    items: IItem[];
-    preview: string | null;
-    getItem(itemId: string): IItem;
+export interface IAppData {
+	items: IItem[];
+	preview: string | null;
+    order: IOrder;
+    formErrors: FormErrors;
 }
 
-export interface IOrder {
-    payment: PaymentMethod;
-    address: string;
-    email: string;
-    phone: string;
-    items: IItem[];
-    total: number;    
+export interface IOrderForm {
+	payment: string;
+	address: string;
+	email: string;
+	phone: string;
 }
 
-export type TOrderForm = Pick<IOrder, 'address' | 'email' | 'phone'>;
+export interface IOrder extends IOrderForm {
+	items: string[];
+	total: number;
+}
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 export interface IOrderSuccess {
-    id: string;
-    total: number;
+	id: string;
+	total: number;
 }
