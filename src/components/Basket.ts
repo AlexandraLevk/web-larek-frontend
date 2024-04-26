@@ -1,10 +1,6 @@
 import { Component } from './base/Component';
-import {
-	createElement,
-	ensureElement,
-	formatNumber,
-} from '../utils/utils';
-import { IEvents } from './base/events';
+import { createElement, ensureElement, formatNumber } from '../utils/utils';
+import { IEvents } from './base/Events';
 
 interface IBasket {
 	list: HTMLElement;
@@ -36,10 +32,10 @@ export class Basket extends Component<IBasket> {
 
 	set items(items: HTMLElement[]) {
 		if (items.length) {
-			this.setDisabled(this._button, false);
+			this.toggleButton(false);
 			this._list.replaceChildren(...items);
 		} else {
-			this.setDisabled(this._button, true);
+			this.toggleButton(true);
 			this._list.replaceChildren(
 				createElement<HTMLParagraphElement>('p', {
 					textContent: 'Корзина пуста',
@@ -48,7 +44,14 @@ export class Basket extends Component<IBasket> {
 		}
 	}
 
+	toggleButton(state: boolean) {
+		this.setDisabled(this._button, state);
+	}
+
 	set total(total: number) {
 		this.setText(this._total, `${formatNumber(total)} синапсов`);
+		if (!total) {
+			this.setDisabled(this._button, true);
+		}
 	}
 }

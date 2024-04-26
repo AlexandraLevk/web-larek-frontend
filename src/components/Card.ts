@@ -77,7 +77,7 @@ export class Card extends Component<IItem> {
 
 	set category(value: ProductCategory) {
 		this.setText(this._category, value);
-		this.addClass(this._category, `card__category_${categoryClass[value]}`);
+		this.toggleClass(this._category, `card__category_${categoryClass[value]}`, true);
 	}
 
 	set buttonText(text: string) {

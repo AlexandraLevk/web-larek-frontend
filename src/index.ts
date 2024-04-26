@@ -2,8 +2,8 @@ import './scss/styles.scss';
 
 import { LarekApi } from './components/LarekApi';
 import { API_URL, CDN_URL } from './utils/constants';
-import { EventEmitter } from './components/base/events';
-import { AppData } from './components/AppData'; //будет еще
+import { EventEmitter } from './components/base/Events';
+import { AppData } from './components/AppData';
 import { Page } from './components/Page';
 import { Card } from './components/Card';
 import { cloneTemplate, ensureElement } from './utils/utils';
@@ -35,6 +35,12 @@ const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const order = new OrderForm(cloneTemplate(orderTemplate), events);
 const contacts = new ContactForm(cloneTemplate(contactsTemplate), events);
+const success = new Success(cloneTemplate(successTemplate), {
+	onClick: () => {
+		modal.close();
+		appData.clearBasket();
+	},
+});
 
 // Изменились элементы каталога
 events.on('items:changed', () => {
@@ -125,7 +131,6 @@ events.on('order:open', () => {
 // Выбор способа оплаты
 events.on('payment:change', (data: { target: string }) => {
 	appData.setPayment(data.target);
-	console.log(appData.order);
 });
 
 // Изменился адрес доставки
@@ -180,22 +185,15 @@ events.on('contacts:submit', () => {
 	api
 		.orderItems(appData.order)
 		.then(() => {
-			const success = new Success(cloneTemplate(successTemplate), {
-				onClick: () => {
-					modal.close();
-					appData.clearBasket();
-				},
-			});
 			success.total = appData.getTotal();
 			modal.render({
 				content: success.render({}),
 			});
 			appData.resetOrder();
+			appData.clearBasket();
 			order.resetPaymentButton();
 		})
-		.catch((err) => {
-			console.error(err);
-		});
+		.catch(console.error);
 });
 
 // Блокируем прокрутку страницы если открыта модалка
@@ -214,6 +212,4 @@ events.on('modal:close', () => {
 api
 	.getItemList()
 	.then(appData.setItemList.bind(appData))
-	.catch((err) => {
-		console.error(err);
-	});
+	.catch(console.error);

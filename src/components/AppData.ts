@@ -1,5 +1,6 @@
 import { FormErrors, IAppData, IItem, IOrder, IOrderForm } from '../types';
- import { IEvents } from './base/Events';
+import { IEvents } from './base/Events';
+
 
 export class AppData implements IAppData {
 	items: IItem[];
