@@ -30,8 +30,8 @@ export class OrderForm extends Form<IOrderForm> {
 	}
 
 	resetPaymentButton() {
-		this._cashButton.classList.remove('button_alt-active');
-		this._cardButton.classList.remove('button_alt-active');
+		this.toggleClass(this._cashButton, 'button_alt-active', false);
+		this.toggleClass(this._cardButton, 'button_alt-active', false);
 	}
 	
 	toggleCard(state: boolean = true) {
